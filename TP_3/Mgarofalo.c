@@ -1,32 +1,74 @@
-/*
- * BibliotecaPersonal.c
- *
- *  Created on: 16 Oct 2021
- *      Author: Tomas Perez Ponisio
- */
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
-#include "BibliotecaPersonal.h"
+#include <ctype.h>
+#include "Mgarofalo.h"
+#include "utn.h"
 
-int encontrarParidad(int numero) {
-	int todoOk = 0;
-	if (numero % 2 == 0) {
-		todoOk = 1;
-	}
-	return todoOk;
+
+
+float calcularPromedio(int num1, int num2){
+    float promedio;
+
+    promedio = (float) (num1 + num2) / 2;
+
+    return promedio;
 }
 
-int pedirEntero() {
+
+
+char opcionConfirmar(char* mensaje, char* mensajeError){
+	char confirmar = 'n';
+	printf("%s", mensaje);
+		fflush(stdin);
+		scanf("%c", &confirmar);
+		confirmar = tolower(confirmar);
+		while(confirmar != 's' && confirmar != 'n')
+		{
+			printf("%s", mensajeError);
+			fflush(stdin);
+			scanf("%c", &confirmar);
+			confirmar = tolower(confirmar);
+		}
+	return confirmar;
+}
+
+
+
+int compruebaLimitesCadena(char cadena[], int maximo, int minimo){
+    int todoOk = 0;
+    if(strlen(cadena) > maximo || strlen(cadena) < minimo){
+        todoOk = 1;
+    }
+    return todoOk;
+}
+
+
+
+void formatoInicialMayuscula(char cadena[]){    // ACA ELIMINE EL PARAMETRO tam PORQUE CON UN WHILE NO HACE FALTA
+
+    int i = 0;
+    strlwr(cadena);
+    cadena[0] = toupper(cadena[0]);
+
+    while(cadena[i] != '\0'){   // VAMOS A ENTRAR HASTA LLEGAR AL FINAL DE LA CADENA QUE ESL EL CARTACTER '\0'
+        if(cadena[i] == ' '){
+            cadena[i+1] = toupper(cadena[i+1]);
+        }
+        i++;
+    }
+}
+
+
+
+int pedirEntero(){
 	int entero;
 	printf("Ingrese un numero entero: ");
 	scanf("%d", &entero);
 	return entero;
 }
 
-int pedirEnteroRango(int min, int max) {
+int pedirEnteroRango(int min, int max){
 	int entero;
 	printf("Ingrese un numero entero: ");
 	scanf("%d", &entero);
@@ -38,7 +80,7 @@ int pedirEnteroRango(int min, int max) {
 	return entero;
 }
 
-int validarDistintoDeCero(int numero) {
+int validarDistintoDeCero(int numero){
 	int todoOk = 0;
 	if (numero != 0) {
 		todoOk = 1;
@@ -46,7 +88,7 @@ int validarDistintoDeCero(int numero) {
 	return todoOk;
 }
 
-int validarDecimales(float numero) {
+int validarDecimales(float numero){
 	int todoOk = 0;
 	if (numero == (int) numero) {
 		todoOk = 1;
@@ -54,7 +96,7 @@ int validarDecimales(float numero) {
 	return todoOk;
 }
 
-int miStrlen(char vect[]) {
+int miStrlen(char vect[]){
 	int cantidad = 0;
 	int i = 0;
 	if (vect != NULL) {
@@ -66,7 +108,7 @@ int miStrlen(char vect[]) {
 	return cantidad;
 }
 
-int validarCadena(char vect[]) {
+int validarCadena(char vect[]){
 	int todoOk = 0;
 	for (int i = 0; i < miStrlen(vect); i++) {
 		if (!(isalpha(vect[i]))) {
@@ -77,7 +119,7 @@ int validarCadena(char vect[]) {
 	return todoOk;
 }
 
-int pedirCadena(char cadena[], char mensaje[], int limite) {
+int pedirCadena(char cadena[], char mensaje[], int limite){
 	int todoOk = 0;
 	char auxCad[100];
 	if (cadena != NULL && mensaje != NULL) {
@@ -99,7 +141,7 @@ int pedirCadena(char cadena[], char mensaje[], int limite) {
 	return todoOk;
 }
 
-int mayusculaPrimerCaracter(char cadena[]) {
+int mayusculaPrimerCaracter(char cadena[]){
 	int todoOk = 0;
 	if (cadena != NULL) {
 		todoOk = 1;
@@ -109,7 +151,7 @@ int mayusculaPrimerCaracter(char cadena[]) {
 	return todoOk;
 }
 
-int getInt(int *pResultado) {
+int getInt(int *pResultado){
 	int retorno = -1;
 	char buffer[4096];
 	if (myGets(buffer, sizeof(buffer)) && esNumerica(buffer)) {
@@ -119,7 +161,7 @@ int getInt(int *pResultado) {
 	return retorno;
 }
 
-int myGets(char *cadena, int longitud) {
+int myGets(char *cadena, int longitud){
 	char buffer[4096];
 	fflush(stdin);
 	scanf("%s", buffer);
@@ -127,8 +169,7 @@ int myGets(char *cadena, int longitud) {
 	return -1;
 }
 
-int validarEntero(int *pResultado, char *mensaje, char *mensajeError,
-		int minimo, int maximo, int reintentos) {
+int validarEntero(int *pResultado, char *mensaje, char *mensajeError, int minimo, int maximo, int reintentos){
 	int todoOk = 0;
 	int buffer;
 	if (pResultado != NULL && mensaje != NULL && mensajeError != NULL
@@ -148,7 +189,7 @@ int validarEntero(int *pResultado, char *mensaje, char *mensajeError,
 	return todoOk;
 }
 
-int esNumerica(char *cadena) {
+int esNumerica(char *cadena){
 	int retorno = 1;
 	for (int i = 0; cadena[i] != '\0'; i++) {
 		if (cadena[0] == '-') {
@@ -162,7 +203,7 @@ int esNumerica(char *cadena) {
 	return retorno;
 }
 
-int getFloat(float *pResultado) {
+int getFloat(float *pResultado){
 	int retorno = -1;
 	char buffer[4096];
 	if (myGets(buffer, sizeof(buffer)) && esNumericoFlotante(buffer)) {
@@ -172,8 +213,7 @@ int getFloat(float *pResultado) {
 	return retorno;
 }
 
-int validarFloat(float *pResultado, char *mensaje, char *mensajeError,
-		float minimo, float maximo, int reintentos) {
+int validarFloat(float *pResultado, char *mensaje, char *mensajeError, float minimo, float maximo, int reintentos){
 	int todoOk = 0;
 	float buffer;
 	if (pResultado != NULL && mensaje != NULL && mensajeError != NULL
@@ -194,7 +234,7 @@ int validarFloat(float *pResultado, char *mensaje, char *mensajeError,
 	return todoOk;
 }
 
-int esNumericoFlotante(char cadena[]) {
+int esNumericoFlotante(char cadena[]){
 	int i = 0;
 	int cantidadPuntos = 0;
 	while (cadena[i] != '\0') {
@@ -212,4 +252,26 @@ int esNumericoFlotante(char cadena[]) {
 		i++;
 	}
 	return 1;
+}
+
+int pedirAlfaNumerico(char cadena[], char mensaje[], int limite){
+	int todoOk = 0;
+	char auxCad[100];
+	if (cadena != NULL && mensaje != NULL) {
+		todoOk = 1;
+		printf("%s", mensaje);
+		fflush(stdin);
+		gets(auxCad);
+
+		while (miStrlen(auxCad) > limite) {
+			printf("Ingrese nuevamente. (maximo %d): ", limite);
+			fflush(stdin);
+			gets(auxCad);
+		}
+
+		//mayusculaPrimerCaracter(auxCad);
+
+		strcpy(cadena, auxCad);
+	}
+	return todoOk;
 }
