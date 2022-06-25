@@ -19,7 +19,7 @@ int main(void) {
 	int nextID = 3000;
 	ePasajero lista[TAM];
 	char salida;
-
+	int flagAlta = 0;
 
 	eTipo tipos[TAM_T] = {
 		{1000,"Turista"},
@@ -46,19 +46,32 @@ int main(void) {
 				}else{
 					printf("ALTA EXITOSA!!! \n");
 				}
+		flagAlta = 1;
 	break;
 	case 2:
-		if(removePassenger(lista, TAM, estados, TAM_E, tipos, TAM_T)==0){
-			printf("No se pudo realizar la baja \n");
+		if(flagAlta == 0){
+			printf("Primero debe ingresar el alta\n");
 		}else{
-			printf("BAJA EXITOSA!!! \n");
+			if(removePassenger(lista, TAM, estados, TAM_E, tipos, TAM_T)==0){
+				printf("No se pudo realizar la baja \n");
+			}else{
+				printf("BAJA EXITOSA!!! \n");
+			}
 		}
 	break;
 	case 3:
-		modificarPersona(lista, TAM, estados, TAM_E, tipos, TAM_T);
+		if(flagAlta == 0){
+			printf("Primero debe ingresar el alta\n");
+		}else{
+			modificarPersona(lista, TAM, estados, TAM_E, tipos, TAM_T);
+		}
 	break;
 	case 4:
-		printPassengers(lista, TAM, estados, TAM_E, tipos, TAM_T);
+		if(flagAlta == 0){
+			printf("Primero debe ingresar el alta\n");
+		}else{
+			printPassengers(lista, TAM, estados, TAM_E, tipos, TAM_T);
+		}
 	break;
 	case 5:
 		mostrarEstados(estados, TAM_E);

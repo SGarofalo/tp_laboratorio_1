@@ -9,6 +9,7 @@
 int menu(){
 	int opcion;
 
+
 	system("cls");
 	printf("		***	ABM Pasajeros ***		\n\n");
 	printf("1- Alta pasajero \n");
@@ -76,6 +77,7 @@ int addPassengers(ePasajero lista[], int tam, int* pId, eEstado estados[], int t
 			auxPasajero.id = *pId;
 			(*pId)++;
 
+			//no se validar nombre y apellido para q solo me tome caracteres
 			printf("Ingrese nombre: ");
 			fflush(stdin);
 			gets(auxPasajero.name);
@@ -88,14 +90,14 @@ int addPassengers(ePasajero lista[], int tam, int* pId, eEstado estados[], int t
 			scanf("%f",&auxPasajero.precio);
 
 			printf("    *** Codigos de Vuelo *** \n\n");
-			printf("**  Descripcion  **\n"
-					"1. Chaco\n"
-					"2. Chubut\n"
-					"3. Cordoba\n"
-					"4. Salta\n"
-					"5. Salta\n"
-					"6. Jujuy\n"
-					"7. Tucuman\n");
+			printf(
+					"		AA200\n"
+					"		AA201\n"
+					"		BB200\n"
+					"		BB202\n"
+					"		CC101\n"
+					"		CC300\n"
+					"		AA300\n");
 
 			printf("Ingrese codigo de vuelo: ");
 			fflush(stdin);

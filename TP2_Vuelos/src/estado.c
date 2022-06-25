@@ -61,3 +61,4 @@ int validarIdEstado(int id, eEstado estados[], int tamE){
 
 	return todoOk; //ESTA
 	}
+

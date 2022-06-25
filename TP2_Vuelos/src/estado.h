@@ -35,5 +35,5 @@ int mostrarEstados(eEstado estados[], int tamE);
  *
  */
 int validarIdEstado(int id, eEstado estados[], int tamE);
-
+int validarPalabra(char palabra[]);
 #endif /* ESTADO_H_ */
