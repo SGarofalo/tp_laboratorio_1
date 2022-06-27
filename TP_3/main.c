@@ -1,242 +1,165 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "LinkedList.h"
 #include "Controller.h"
 #include "Passenger.h"
-#include "menu.h"
-#include "Mgarofalo.h"
-
-/****************************************************
-    Menu:
-     1. Cargar los datos de los pasajeros desde el archivo data.csv (modo texto).
-     2. Cargar los datos de los pasajeros desde el archivo data.csv (modo binario).
-     3. Alta de pasajero
-     4. Modificar datos de pasajero
-     5. Baja de pasajero
-     6. Listar pasajeros
-     7. Ordenar pasajeros
-     8. Guardar los datos de los pasajeros en el archivo data.csv (modo texto).
-     9. Guardar los datos de los pasajeros en el archivo data.csv (modo binario).
-    10. Salir
-*****************************************************/
-
-
+#include "validaciones.h"
 
 int main()
 {
 	setbuf(stdout,NULL);
-
-    int option = 0;
-    int flagTexto = 1;
-    int flagBinario = 1;
-    char salir = 'n';
-
-    LinkedList* listaPasajeros = ll_newLinkedList();
-
-//    printf("Funciona tp3_windows_prueba\n");
-
-    do{
-    	menu(&option);
-        switch(option)
-        {
-            case 1:
-            	if( !flagBinario )
-            	{
-            		printf("Se encuentra trabajando con el archivo binario, debe guardarlo primero.\n");
-            	}
-            	else
-            	{
-            		if( !flagTexto)
-            		{
-            			printf("Se abrio el archivo en modo texto.\n");
-            		}
-            		else
-            		{
-            			if( !controller_loadFromText("data.csv", listaPasajeros))
-            			{
-            				flagTexto = 0;
-            				printf("Lista de pasajeros (modo texto) cargada exitosamente.\n");
-            			}
-            			else
-            			{
-            				printf("Error al cargar desde texto\n");
-            			}
-            		}
-            	}
-                break;
-            case 2:
-            	if( !flagTexto)
-            	{
-            		printf("Se encuentra trabajando con el archivo en texto, debe guardarlo primero.\n");
-            	}
-            	else
-            	{
-					if( !flagBinario )
+	int opcion;
+	char seguir;
+	int banderaCarga;
+	int banderaSalida;
+	int auxiliar;
+    LinkedList* listaPasajeros;
+    listaPasajeros = ll_newLinkedList();
+    banderaCarga=0;
+    banderaSalida=0;
+   	seguir = 's';
+   	while(seguir=='s')
+   	{
+   		printf("---------------------------------------------------------------------------------------------------------------\n");
+   		printf("\t1. Cargar los datos de los pasajeros desde el archivo data.csv (MODO TEXTO).  \n\n");
+   		printf("\t2. Cargar los datos de los pasajeros desde el archivo data.csv (MODO BINARIO).\n\n");
+   		printf("\t3. Alta de pasajero: \n\n");
+   		printf("\t4. Modificar datos de pasajero: \n\n");
+   		printf("\t5. Baja de pasajero: \n\n");
+   		printf("\t6. Listar pasajeros: \n\n");
+   		printf("\t7. Ordenar pasajeros: \n\n");
+   		printf("\t8. Guardar los datos de los pasajeros en el archivo data.csv (MODO TEXTO). \n\n");
+   		printf("\t9. Guardar los datos de los pasajeros en el archivo data.csv (MODO BINARIO). \n\n");
+   		printf("\t10. Salir \n");
+   		printf("---------------------------------------------------------------------------------------------------------------\n");
+   		opcion=PedirEntero("Elija una opcion: \n");
+   		switch(opcion)
+   		{
+   			case 1:
+   				if(banderaCarga==0)
+   				{
+   					if(controller_loadFromText("MOCK_DATAx.csv",listaPasajeros)==1)
 					{
-						printf("Se abrio el archivo en modo binario.\n");
+						printf("Carga exitosa...\n");
+						banderaCarga=1;
 					}
-					else
-					{
-						if( !controller_loadFromBinary("data.bin", listaPasajeros))
-						{
-							flagBinario = 0;
-							printf("Lista de pasajeros cargada (modo binario) exitosamente.\n");
-						}
-						else
-						{
-							printf("Error al cargar desde binario\n");
-						}
-					}
-				}
-            	break;
-            case 3:
-            	if( !flagTexto || !flagBinario)
-            	{
-            		if( !controller_addPassenger(listaPasajeros))
-            		{
-            			printf("Alta exitosa.\n");
-            		}
-            		else
-            		{
-            			printf("Error en alta de pasajeros\n");
-            		}
-            	}
-            	else
-            	{
-            		printf("No se abrio ningun archivo.\n");
-            	}
-            	break;
-            case 4:
-            	if( !flagTexto || !flagBinario)
-            	{
-            		if( !ll_isEmpty(listaPasajeros))
-            		{
-            			if( !controller_editPassenger(listaPasajeros))
-            			{
-            				printf("Error en modificacion de pasajeros\n");
-            			}
-            		}
-            	}
-            	break;
-            case 5:
-            	if( !flagTexto || !flagBinario)
-            	{
-            		if( !ll_isEmpty(listaPasajeros))
-            		{
-            			if( controller_removePassenger(listaPasajeros))
-            			{
-            				printf("Baja del pasajero exitosa.\n");
-            			}
-            			else
-            			{
-            				printf("Baja cancelada por el usuario.\n");
-            			}
-            		}
-            	}
-            	break;
-            case 6:
-            	if( !flagTexto || !flagBinario)
-            	{
-            		if( !ll_isEmpty(listaPasajeros))
-					{
-						controller_ListPassenger(listaPasajeros);
-					}
-					else
-					{
-						printf("La lista no tiene elementos.\n");
-					}
-            	}
-            	else
-            	{
-            		printf("No se abrio aun el archivo de pasajeros (en ningun modo) para poder mostrarlo.\n");
-            	}
-            	break;
-            case 7:
-            	if(flagBinario == 0 || flagTexto == 0)
+   				}
+   				else
+   				{
+   					printf("Ya se ha realizado una carga desde el archivo!!");
+   				}
+			break;
+
+   			case 2:
+   				if(banderaCarga==0)
 				{
-					if(!ll_isEmpty(listaPasajeros))
+   					if(controller_loadFromBinary("MOCK_DATAx.bin",listaPasajeros)==1)
 					{
-						if(!controller_sortPassenger(listaPasajeros))
-						{
-							printf("Ordenamiento exitoso!\n");
-						}else
-						{
-							printf("Error en ordenamiento de pasajeros\n");
-						}
-					}else
-					{
-						printf("No hay pasajeros en la lista para ordenar\n");
+						printf("Carga exitosa...\n");
+						banderaCarga=1;
 					}
+
 				}
 				else
 				{
-					printf("No se ha abierto el archivo para ordenar\n");
+					printf("Ya se ha realizado una carga desde el archivo!!");
 				}
-            	break;
-            case 8:
-            	if(!flagTexto)
+   			break;
+
+   			case 3:
+   				auxiliar=controller_addPassenger(listaPasajeros);
+   				if(auxiliar==1)
+   				{
+   					printf("Pasajero cargado exitosamente..");
+   				}
+   			break;
+
+   			case 4:
+				auxiliar=controller_editPassenger(listaPasajeros);
+				if(auxiliar==1)
 				{
-					if(!controller_saveAsText("data.csv",listaPasajeros))
-					{
-						flagTexto = 1;
-						printf("\nEl archivo data.csv se guardo en modo texto\n");
-					}
-					else
-					{
-						printf("Ocurrio un problema al guardar el archivo en modo texto\n");
-					}
+					printf("Modificacion exitosa\n");
 				}
 				else
 				{
-					if(!flagBinario)
+					if(auxiliar==0)
 					{
-						printf("Usted abrio el archivo binario, no puede guardarla como texto!");
+						printf("Modificacion cancelada\n");
 					}
 					else
 					{
-						printf("No se ha abierto el archivo  en texto para guardar\n");
+						printf("No se ha podido modificar\n");
 					}
 				}
-            	break;
-            case 9:
-            	if(!flagBinario)
+   			break;
+
+   			case 5:
+				auxiliar=controller_removePassenger(listaPasajeros);
+				if(auxiliar==1)
 				{
-					if(!controller_saveAsBinary("data.bin",listaPasajeros))
-					{
-						flagBinario = 1;
-						printf("\nEl archivo data.bin se guardo en modo binario\n");
-					}
-					else
-					{
-						printf("Error al guardar en modo binario\n");
-					}
+					printf("..");
+				}
+   			break;
+
+   			case 6:
+   				ll_sort(listaPasajeros,compareById,1);
+   				if(controller_ListPassenger(listaPasajeros)==1)
+				{
+					printf("\nListado Exitoso\n");
 				}
 				else
 				{
-					if(!flagTexto)
-					{
-						printf("Usted abrio el archivo en texto, no puede guardarla como binario!\n");
-					}
-					else
-					{
-						printf("No se ha abierto el archivo  en binario para guardar\n");
-					}
+					printf("\nNo hay pasajeros para mostrar\n");
 				}
-            	break;
-            case 10:
-            	salir = opcionConfirmar("Seguro que quiere salir? s/n ", "Error, vuelva a intentarlo. Salir? s/n ");
-            	break;
-            default:
-            	break;
-        }
-        system("pause");
 
-    }while(salir == 'n');
+   			break;
 
-    ll_deleteLinkedList(listaPasajeros);
-    free(listaPasajeros);
+   			case 7:
+   				auxiliar=controller_sortPassenger(listaPasajeros);
+				if(auxiliar==1)
+				{
+					printf("Listado Exitoso\n");
+				}
+   			break;
 
+   			case 8:
+   				auxiliar=controller_saveAsText("MOCK_DATAx.csv",listaPasajeros);
+   				if(auxiliar==1)
+				{
+					printf("Se guardo con exito\n");
+					banderaSalida=1;
+				}
+   			break;
+
+   			case 9:
+   				auxiliar=controller_saveAsBinary("MOCK_DATAx.bin",listaPasajeros);
+   				if(auxiliar==1)
+				{
+					printf("Se guardo con exito\n");
+					banderaSalida=1;
+				}
+   			break;
+
+   			case 10:
+   				if(banderaSalida==1)
+				{
+					// sale del menu
+					printf("Saliendo..\n");
+					seguir = 'n';
+				}
+				else
+				{
+					printf("No puede salir si no realizó algún guardado de archivo");
+				}
+
+   			break;
+
+   			default:
+   				printf("Opcion incorrecta\n");
+   			break;
+   		}
+   		printf("\n\n");
+   	}
     return 0;
 }
 
